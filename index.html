@@ -7,7 +7,7 @@
     <title>Snake</title>
   </head>
   <body>
-    <canvas id="canvas" width="360" height="360"></canvas>
+    <canvas id="canvas" width="400" height="400"></canvas>
 
     <script>
       var canvas, ctx;
@@ -20,66 +20,44 @@
         document.addEventListener("touchstart", touchEvent);
         document.addEventListener("touchmove", touchEvent);
 
-        // render fr times per second
-        var f = 8;
-        setInterval(draw, 1000 / f);
+        // render X times per second
+        var x = 8;
+        setInterval(draw, 1000 / x);
       };
 
       // game world
-      var gridSize = 2*(halfGridSize = 9); // 18 x 18 - 9 x 9
-      var tileSize = 20;
+      var gridSize = (tileSize = 20); // 20 x 20 = 400
       var nextX = (nextY = 0);
-      var diffX = (diffY = 0);
 
       // snake
       var defaultTailSize = 3;
       var tailSize = defaultTailSize;
       var snakeTrail = [];
-      var snakeY = halfGridSize + (snakeX = Math.floor(halfGridSize/2));
+      var snakeX = (snakeY = 10);
 
       // apple
       var appleX = (appleY = 15);
 
       // draw
       function draw() {
-        // move snake in next pos along X
-        if (nextX != 0) {
-          snakeX += nextX;
-          // snake over game world?
-          if (snakeX < 0) {
-            snakeX = gridSize - 1;
-            if (snakeY < halfGridSize) {
-              snakeX -= halfGridSize;
-            }
-          }  
-          if (snakeX > halfGridSize - 1) {
-            if (snakeY < halfGridSize) {
-              snakeX = 0;
-            }
-          }          
-          if (snakeX > gridSize - 1) {
-            snakeX = 0;
-          }
+        // move snake in next pos
+        snakeX += nextX;
+        snakeY += nextY;
+
+        // snake over game world?
+        if (snakeX < 0) {
+          snakeX = gridSize - 1;
         }
-        // move snake in next pos along Y
-        if (nextY != 0) {
-          snakeY += nextY;
-          // snake over game world?
-          if (snakeY < 0) {
-            snakeY = gridSize - 1;
-          }  
-          if (snakeY < halfGridSize) {
-            if (snakeX > halfGridSize - 1) {
-              snakeY = gridSize - 1;
-            }
-          }
-          if (snakeY > gridSize - 1) {
-            snakeY = 0;
-            if (snakeX > halfGridSize - 1) {
-              snakeY = halfGridSize;
-            }
-          }
-        }  
+        if (snakeX > gridSize - 1) {
+          snakeX = 0;
+        }
+
+        if (snakeY < 0) {
+          snakeY = gridSize - 1;
+        }
+        if (snakeY > gridSize - 1) {
+          snakeY = 0;
+        }
 
         //snake bite apple?
         if (snakeX == appleX && snakeY == appleY) {
@@ -87,20 +65,11 @@
 
           appleX = Math.floor(Math.random() * gridSize);
           appleY = Math.floor(Math.random() * gridSize);
-          // apple over game world?
-          if (appleX > halfGridSize - 1) {
-            if (appleY < halfGridSize) {
-              appleX = Math.floor(appleX/2)
-              appleY = halfGridSize + Math.floor(appleY/2)
-            }
-          }
         }
 
         //paint background
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, halfGridSize*tileSize, gridSize*tileSize);    
-        ctx.fillRect(halfGridSize*tileSize, halfGridSize*tileSize, halfGridSize*tileSize, halfGridSize*tileSize);
-        
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // paint snake
         ctx.fillStyle = "green";
@@ -128,6 +97,7 @@
           snakeTrail.shift();
         }
       }
+
 
       // keyboard input
       function keyDownEvent(e) {
@@ -176,17 +146,9 @@
             nextX = 0;
             nextY = Math.sign(diffY);
           }
-          //// Uncomment for touch debugging
-          //output.innerHTML = "Rel. touch: "
-          //                   +  " x: " + Math.ceil(diffX/tileSize) 
-          //                   + ", y: " + Math.ceil(diffY/tileSize);
           e.preventDefault();
         }
       }
     </script>
-
-<!-- Uncomment the following line to show controls debugging output -->
-<!--    <div id = "output"></div> -->
-    
   </body>
 </html>
