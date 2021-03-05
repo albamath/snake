@@ -108,27 +108,30 @@
               nextX = -1; 
               nextY = 0;
             }
+            e.preventDefault();
             break;
           case 38:
             if (nextY != 1) {
               nextX = 0;
               nextY = -1;
             }
+            e.preventDefault();
             break;
           case 39:
             if (nextX != -1) {
               nextX = 1;
               nextY = 0;
             }
+            e.preventDefault();
             break;
           case 40:
             if (nextY != -1) {
               nextX = 0;
               nextY = 1;
             }
+            e.preventDefault();
             break;
         }
-        e.preventDefault();
       }
       
       // touch input
